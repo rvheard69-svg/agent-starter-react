@@ -25,7 +25,7 @@ export default async function AdminPage() {
           style={{ boxShadow: '0 0 8px var(--primary)' }}
         />
         <h1 className="text-primary font-mono text-sm font-bold tracking-widest uppercase">
-          Jarvis Admin
+          Conscious Admin
         </h1>
       </div>
       <p className="text-muted-foreground mb-8 font-mono text-xs tracking-wide uppercase">
