@@ -21,6 +21,18 @@ const LIVEKIT_URL = process.env.LIVEKIT_URL;
 // don't cache the results
 export const revalidate = 0;
 
+// Allow the Jarvis-CV neural-interface dev server (localhost:3001) to mint
+// tokens here too, instead of duplicating LIVEKIT_API_SECRET into that repo.
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': 'http://localhost:3001',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { headers: CORS_HEADERS });
+}
+
 export async function POST(req: Request) {
   // make an exception for the vercel preview environment
   if (process.env.NODE_ENV !== 'development' && process.env.IS_VERCEL_PREVIEW !== 'true') {
@@ -66,12 +78,13 @@ export async function POST(req: Request) {
     };
     const headers = new Headers({
       'Cache-Control': 'no-store',
+      ...CORS_HEADERS,
     });
     return NextResponse.json(data, { headers });
   } catch (error) {
     if (error instanceof Error) {
       console.error(error);
-      return new NextResponse(error.message, { status: 500 });
+      return new NextResponse(error.message, { status: 500, headers: CORS_HEADERS });
     }
   }
 }
