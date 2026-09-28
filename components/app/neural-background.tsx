@@ -80,6 +80,7 @@ export function NeuralBackground() {
     draw();
 
     function handleResize() {
+      if (!canvas) return;
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     }
