@@ -1,73 +1,7 @@
 'use client';
 
+import { HudRing } from '@/components/app/hud-ring';
 import { Button } from '@/components/ui/button';
-
-const TICK_ANGLES = Array.from({ length: 24 }, (_, i) => i * 15);
-
-function HudRing() {
-  return (
-    <div className="relative flex size-[30rem] items-center justify-center">
-      {/* Soft glow filling the dial, clipped to a perfect circle */}
-      <div
-        className="pointer-events-none absolute inset-0 rounded-full"
-        style={{
-          background:
-            'radial-gradient(circle at center, color-mix(in srgb, var(--primary) 14%, transparent), transparent 75%)',
-          animation: 'hud-glow-pulse 8s ease-in-out infinite',
-        }}
-      />
-
-      {/* Outer + mid + inner static rings */}
-      <span className="border-primary/30 absolute inset-0 rounded-full border" />
-      <span className="border-primary/60 absolute inset-18 rounded-full border" />
-      <span className="border-primary/25 absolute inset-40 rounded-full border" />
-
-      {/* Tick marks around the outer ring - major every 30deg, minor every 15deg */}
-      {TICK_ANGLES.map((angle) => {
-        const isMajor = angle % 30 === 0;
-        return (
-          <span
-            key={angle}
-            className={
-              isMajor
-                ? 'bg-primary/70 absolute top-1/2 left-1/2 w-px origin-bottom'
-                : 'bg-primary/35 absolute top-1/2 left-1/2 w-px origin-bottom'
-            }
-            style={{
-              height: isMajor ? '0.9rem' : '0.5rem',
-              transform: `rotate(${angle}deg) translateY(-15rem)`,
-            }}
-          />
-        );
-      })}
-
-      {/* Slow-expanding pulse rings */}
-      <span
-        className="border-primary/50 absolute inset-18 rounded-full border"
-        style={{ animation: 'hud-pulse 3s ease-out infinite' }}
-      />
-      <span
-        className="border-primary/40 absolute inset-18 rounded-full border"
-        style={{ animation: 'hud-pulse 3s ease-out infinite 1.5s' }}
-      />
-
-      {/* Radar sweep hand */}
-      <div
-        className="absolute inset-18 rounded-full"
-        style={{ animation: 'spin 8s linear infinite' }}
-      >
-        <span
-          className="absolute top-1/2 left-1/2 h-1/2 w-px origin-top"
-          style={{
-            background: 'linear-gradient(to bottom, var(--primary), transparent)',
-          }}
-        />
-      </div>
-
-      <WelcomeImage />
-    </div>
-  );
-}
 
 function WelcomeImage() {
   return (
@@ -101,7 +35,9 @@ export const WelcomeView = ({
     <div ref={ref}>
       <section className="relative flex flex-col items-center justify-center text-center">
         <div className="mb-6">
-          <HudRing />
+          <HudRing>
+            <WelcomeImage />
+          </HudRing>
         </div>
 
         <Button

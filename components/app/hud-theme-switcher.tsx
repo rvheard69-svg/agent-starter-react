@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { THEME_FLASH_EVENT } from '@/components/app/theme-flash';
 import { getHudHue, setHudHue } from '@/lib/admin-api';
+import { playHudChime } from '@/lib/hud-chime';
 
 const THEMES = [
   { id: 'cyberpunk', label: 'Cyberpunk' },
@@ -78,6 +80,8 @@ export function HudThemeSwitcher() {
 
   function select(id: ThemeId) {
     applyTheme(id);
+    window.dispatchEvent(new Event(THEME_FLASH_EVENT));
+    playHudChime(id);
     setHudHue(PRESET_HUES[id]).catch((err) => {
       console.warn('Could not sync theme to the native HUD (hud_hue):', err);
     });
